@@ -9,7 +9,7 @@ file siakad/siakad.cpp dan menjalankannya pada compiler C++ yang sesuai dengan s
 ## Issue / Bugs
 karena program belum selesai, mungkin masih ada beberapa bug.
 jangan segan-segan untuk melaporkan bug
-* -
+* - struct relasi
 
 ## fitur-fitur
 * Validasi
@@ -19,11 +19,9 @@ jangan segan-segan untuk melaporkan bug
   - lihat detail User
   - cari User
   - tambah User
-  - hapus User
   - cari user
+  - dosen input nilai mahasiswa
 
 ## fitur mendatang
 * AutoIncrement saat register nomorInduk
-* function admin lainnya
-* function dosen
 * function mahasiswa
