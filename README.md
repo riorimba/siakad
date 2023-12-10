@@ -13,20 +13,20 @@ jangan segan-segan untuk melaporkan bug
 
 ## fitur-fitur
 * Validasi
- - nomorInduk Uniq
- - kodeMataKuliah Uniq
- - kodeTransaksi Uniq
+  - nomorInduk Uniq
+  - kodeMataKuliah Uniq
+  - kodeTransaksi Uniq
 * Login berdasarkan role(admin/user)
 * Admin Dashboard
- - Creat, Read, Update User
- - Creat, Read, Update Mata Kuliah
- - Creat, Read, Update Transaksi
+  - Creat, Read, Update User
+  - Creat, Read, Update Mata Kuliah
+  - Creat, Read, Update Transaksi
 * Dosen Dashboard
- - Detail mahasiswa ALL
- - Cara Mahasiswa(nomorInduk)
- - Input Nilai
+  - Detail mahasiswa ALL
+  - Cara Mahasiswa(nomorInduk)
+  - Input Nilai
 * Mahasiswa Dashboard
- - Lihat nilai diri sendiri
+  - Lihat nilai diri sendiri
 
 ## fitur mendatang
 * AutoIncrement saat register nomorInduk
