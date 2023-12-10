@@ -19,7 +19,8 @@ struct User {
 struct MataKuliah {
 	string kodeMataKuliah;
 	string namaMataKuliah;
-	string dosen;
+    string namaDosen;
+	string nomorIndukDosen;
 };
 
 // Struct Transaksi
@@ -34,16 +35,18 @@ struct Transaksi {
 // user
 const int MAX_USERS = 100;
 User users[MAX_USERS];
-int userCount = 3;
+int userCount = 4;
 // mata kuliah
 const int MAX_MATAKULIAH = 100;
 MataKuliah mataKuliah[MAX_MATAKULIAH];
 int mataKuliahCount = 3;
 // transaksi
-Transaksi transaksi[];
-int transaksiCount = 0;
+const int MAX_TRANSAKSI = 100;
+Transaksi transaksi[MAX_TRANSAKSI];
+int transaksiCount = 2;
 
 User currentUser;
+MataKuliah currentMataKuliah;
 Transaksi currentTransaksi;
 
 //test akun
@@ -64,20 +67,40 @@ void blueprintUserAndAdmin() {
     users[2].password = "Monhero12";
     users[2].nama = "raka";
     users[2].role = "mahasiswa";
-    users[2].status = "terblokir";
-}
+    users[2].status = "aktif";
+
+    users[3].nomorInduk = "1462300004";
+    users[3].password = "Monhero12";
+    users[3].nama = "agil";
+    users[3].role = "dosen";
+    users[3].status = "aktif";
+}   
 void blueprintMataKuliah() {
 	mataKuliah[0].kodeMataKuliah = "MK001";
 	mataKuliah[0].namaMataKuliah = "Pemrograman Dasar";
-	mataKuliah[0].dosen = "1462300002";
+    mataKuliah[0].namaDosen = "Pak Raka";
+	mataKuliah[0].nomorIndukDosen = "1462300002";
 
 	mataKuliah[1].kodeMataKuliah = "MK002";
 	mataKuliah[1].namaMataKuliah = "Pemrograman Lanjut";
-	mataKuliah[1].dosen = "1462300002";
+    mataKuliah[1].namaDosen = "Pak Agil";
+    mataKuliah[1].nomorIndukDosen = "1462300002";
 
 	mataKuliah[2].kodeMataKuliah = "MK003";
 	mataKuliah[2].namaMataKuliah = "Pemrograman Web";
-	mataKuliah[2].dosen = "1462300002";
+    mataKuliah[2].namaDosen = "Pak Abidin";
+    mataKuliah[2].nomorIndukDosen = "1462300004";
+}
+void blueprintTransaksi() {
+    transaksi[0].kodeTransaksi = "TR001";
+    transaksi[0].nomorInduk = "1462300003";
+    transaksi[0].kodeMataKuliah = "MK001";
+    transaksi[0].nilai = 0;
+
+    transaksi[1].kodeTransaksi = "TR002";
+    transaksi[1].nomorInduk = "1462300003";
+    transaksi[1].kodeMataKuliah = "MK003";
+    transaksi[1].nilai = 0;
 }
 
 //Validasi
@@ -124,8 +147,8 @@ void hidePassword(string& password) {
             }
         }
 
-        if (password.length() < 8 && hasDigit && hasUppercase) {
-            break;
+        if (password.length() > 8 && hasDigit && hasUppercase) {
+            continue;
         }
     }
     cout << endl;
@@ -151,7 +174,6 @@ bool loginUser(const string& nomorInduk, const string& password, string& role, U
     return false;
 }
 
-//dashboard admin
 void detailUser() {
     cout << "\nDetail Pengguna:\n";
     for (int i = 0; i < userCount; ++i) {
@@ -286,7 +308,8 @@ void detailMataKuliah() {
 		cout << "Mata Kuliah " << i + 1 << ":\n";
 		cout << "Kode Mata Kuliah    : " << mataKuliah[i].kodeMataKuliah << "\n";
 		cout << "Nama Mata Kuliah    : " << mataKuliah[i].namaMataKuliah << "\n";
-		cout << "Dosen               : " << mataKuliah[i].dosen << "\n";
+        cout << "Nama Dosen          : " << mataKuliah[i].namaDosen << "\n";
+		cout << "Nomor Induk Dosen   : " << mataKuliah[i].nomorIndukDosen << "\n";
 		cout << "\n";
 	}
 
@@ -308,7 +331,8 @@ void cariMataKuliah() {
 				cout << "Mata Kuliah " << i + 1 << ":\n";
 				cout << "Kode Mata Kuliah    : " << mataKuliah[i].kodeMataKuliah << "\n";
 				cout << "Nama Mata Kuliah    : " << mataKuliah[i].namaMataKuliah << "\n";
-				cout << "Dosen               : " << mataKuliah[i].dosen << "\n";
+                cout << "Nama Dosen          : " << mataKuliah[i].namaDosen << "\n";
+				cout << "Nomor Induk Dosen   : " << mataKuliah[i].nomorIndukDosen << "\n";
 			}
 		}
         if (!mataKuliahDitemukan) {
@@ -321,7 +345,7 @@ void cariMataKuliah() {
 }
 
 void tambahMataKuliah() {
-    string kodeMataKuliah, namaMataKuliah, nomorIndukDosen;
+    string kodeMataKuliah, namaMataKuliah, nomorIndukDosen, namaDosen;
 	char pilihan = 0;
     do {
 		cout << "\nTambah Mata Kuliah\n";
@@ -335,16 +359,29 @@ void tambahMataKuliah() {
 		cin >> namaMataKuliah;
 		cout << "Masukkan nomor induk dosen: ";
 		cin >> nomorIndukDosen;
-        if (mataKuliahCount < MAX_MATAKULIAH) {
-			mataKuliah[mataKuliahCount].kodeMataKuliah = kodeMataKuliah;
-			mataKuliah[mataKuliahCount].namaMataKuliah = namaMataKuliah;
-			mataKuliah[mataKuliahCount].dosen = nomorIndukDosen;
-			mataKuliahCount++;
-			cout << "Mata Kuliah berhasil ditambahkan!" << endl;
-		}
-        else {
-			cout << "Mata Kuliah mencapai limit. Tidak dapat menambahkan mata kuliah lagi." << endl;
-		}
+
+        for (int i = 0; i < userCount; ++i) {
+            if (users[i].nomorInduk == nomorIndukDosen) {
+                if (users[i].role == "dosen") {
+                    if (mataKuliahCount < MAX_MATAKULIAH) {
+                        mataKuliah[mataKuliahCount].kodeMataKuliah = kodeMataKuliah;
+                        mataKuliah[mataKuliahCount].namaMataKuliah = namaMataKuliah;
+                        mataKuliah[mataKuliahCount].namaDosen = users[i].nama;
+                        mataKuliah[mataKuliahCount].nomorIndukDosen = nomorIndukDosen;
+                        mataKuliahCount++;
+                        cout << "Mata Kuliah berhasil ditambahkan!" << endl;
+                    }
+                    else {
+                        cout << "Mata Kuliah mencapai limit. Tidak dapat menambahkan mata kuliah lagi." << endl;
+                    }
+				}
+                else {
+					cout << "Nomor Induk yang Anda masukkan bukan dosen.\n";
+				}
+				break;
+            }
+        }
+
 		cout << "\nApakah Anda ingin menambahkan mata kuliah lagi? (y/n): ";
 		cin >> pilihan;
 	} while (pilihan == 'y' || pilihan == 'Y');
@@ -361,8 +398,7 @@ void editMataKuliah() {
 
     for (int i = 0; i < mataKuliahCount; ++i) {
         if (mataKuliah[i].kodeMataKuliah == kodeMataKuliah) {
-			// Meminta input baru dari pengguna
-			string newKodeMataKuliah, newNamaMataKuliah, newDosen;
+			string newKodeMataKuliah, newNamaMataKuliah, newNomorIndukDosen, newNamaDosen;
 
 			cout << "apakah ingin menggunakan kode mata kuliah yang sama(y/n)?";
 			cin >> pilihan;
@@ -379,73 +415,96 @@ void editMataKuliah() {
 			}
 			cout << "Masukkan nama mata kuliah: ";
 			cin >> newNamaMataKuliah;
-			cout << "Masukkan dosen: ";
-			cin >> newDosen;
+            cout << "Masukkan nomor induk dosen: ";
+            cin >> newNomorIndukDosen;
 
-			// Mengganti informasi mata kuliah dengan informasi baru
-			mataKuliah[i].kodeMataKuliah = newKodeMataKuliah;
-			mataKuliah[i].namaMataKuliah = newNamaMataKuliah;
-			mataKuliah[i].dosen = newDosen;
+            for (int j = 0; j < userCount; ++j) {
+                if (users[j].nomorInduk == newNomorIndukDosen) {
+                    if (users[j].role == "dosen") {
+                        // Mengganti informasi mata kuliah dengan informasi baru
+                        mataKuliah[i].kodeMataKuliah = newKodeMataKuliah;
+                        mataKuliah[i].namaMataKuliah = newNamaMataKuliah;
+                        mataKuliah[i].namaDosen = users[j].nama;
+                        mataKuliah[i].nomorIndukDosen = newNomorIndukDosen;
 
-			cout << "Informasi mata kuliah berhasil diubah." << endl;
-			return;
+                        cout << "Informasi mata kuliah berhasil diubah." << endl;
+                        return;
+                    }
+                    else {
+                        cout << "Nomor Induk yang Anda masukkan bukan dosen.\n";
+                    }
+                    break;
+                }
+            }
 		}
 	}
 }
 
-void adminDashboard(User& currentUser) {
-    int choice;
-    do {
-        cout << "\n=== DASHBOARD ADMIN ===" << endl;
-        cout << "Hai Admin, " << currentUser.nama << endl;
-        cout << "1. Detail User ALL" << endl;
-        cout << "2. Cari User" << endl;
-        cout << "3. Tambah User" << endl;
-        cout << "4. Edit User" << endl;
-        cout << "5. Detail Mata Kuliah ALL" << endl;
-        cout << "6. Cari Mata Kuliah" << endl;
-        cout << "7. Tambah Mata Kuliah" << endl;
-        cout << "8. Edit Mata Kuliah" << endl;
-        cout << "9. Kembali ke Login" << endl;
-        cout << "Pilih opsi : ";
-        cin >> choice;
+void inputTransaksi() {
+    cout << "\nInput Transaksi Mahasiswa\n";
+    string nomorInduk, kodeMataKuliah, kodeTransaksi;
+    bool penggunaDitemukan = false;
 
-        switch (choice) {
-        case 1:
-            detailUser();
-            break;
-        case 2:
-            cariUser();
-            break;
-        case 3:
-            tambahUser();
-            break;
-        case 4:
-            editUser();
-            break;
-        case 5:
-            detailMataKuliah();
-			break;
-        case 6:
-			cariMataKuliah();
-            break;
-        case 7:
-            tambahMataKuliah();
-            break;
-        case 8:
-            editMataKuliah();
-			break;
-        case 9:
-            cout << "Keluar dari Dashboard Admin." << endl;
-            break;
-        default:
-            cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
-            break;
+    bool nomorTransaksiUnik = false;
+    while (!nomorTransaksiUnik) {
+        cout << "Masukkan nomor transaksi: ";
+        cin >> kodeTransaksi;
+
+        nomorTransaksiUnik = true;
+        for (int i = 0; i < transaksiCount; ++i) {
+            if (transaksi[i].kodeTransaksi == kodeTransaksi) {
+                cout << "Nomor transaksi sudah digunakan. Silakan coba lagi." << endl;
+                cout << endl;
+                nomorTransaksiUnik = false;
+                break;
+            }
         }
-    } while (choice != 8);
-};
+    }
 
-//dashboard Dosen
+    cout << "Masukkan nomor induk mahasiswa: ";
+    cin >> nomorInduk;
+
+    for (int i = 0; i < userCount; ++i) {
+        if (users[i].nomorInduk == nomorInduk) {
+            if (users[i].role == "mahasiswa") {
+                penggunaDitemukan = true;
+                cout << "\nPengguna ditemukan!\n";
+
+                cout << "Masukkan kode mata kuliah: ";
+                cin >> kodeMataKuliah;
+
+                bool mataKuliahDitemukan = false;
+
+                for (int k = 0; k < transaksiCount; ++k) {
+                    if (transaksi[k].nomorInduk == nomorInduk && transaksi[k].kodeMataKuliah == kodeMataKuliah) {
+                        cout << "Mahasiswa sudah pernah mengambil mata kuliah ini sebelumnya.\n";
+                        mataKuliahDitemukan = true;
+                        break;
+                    }
+                }
+
+                if (!mataKuliahDitemukan) {
+                    transaksi[transaksiCount].kodeTransaksi = kodeTransaksi;
+                    transaksi[transaksiCount].nomorInduk = nomorInduk;
+                    transaksi[transaksiCount].kodeMataKuliah = kodeMataKuliah;
+                    transaksi[transaksiCount].nilai = 0;
+                    transaksiCount++;
+                    cout << "Transaksi berhasil diinput." << endl;
+                }
+
+                break;
+            }
+            else {
+                cout << "Nomor Induk yang Anda masukkan bukan mahasiswa.\n";
+                break;
+            }
+        }
+    }
+
+    if (!penggunaDitemukan) {
+        cout << "Pengguna tidak ditemukan.\n";
+    }
+}
 
 void detailMahasiswa() {
     cout << "\nDaftar Mahasiswa:" << endl;
@@ -455,7 +514,19 @@ void detailMahasiswa() {
             cout << "Nomor Induk    : " << users[i].nomorInduk << "\n";
             cout << "Nama           : " << users[i].nama << "\n";
             cout << "Status         : " << users[i].status << "\n";
-            cout << "\n";
+            cout << "Nilai Matakuliah Mahasiswa\n";
+            for (int j = 0; j < transaksiCount; ++j) {
+                if (transaksi[j].nomorInduk == users[i].nomorInduk) {
+                    cout << "Kode Transaksi:" << transaksi[j].kodeTransaksi << endl;
+                    for (int k = 0; k < mataKuliahCount; ++k ) {
+                        if (mataKuliah[k].kodeMataKuliah == transaksi[j].kodeMataKuliah) {
+                            cout << j+1 << ". " << mataKuliah[k].namaMataKuliah;
+                        }
+                    }
+                    cout << " : " << transaksi[j].nilai << "\n";
+                }
+            }
+            cout << "============================\n";
         }
     }
 }
@@ -480,6 +551,18 @@ void cariMahasiswa() {
                     cout << "Nama           : " << users[i].nama << "\n";
                     cout << "Role           : " << users[i].role << "\n";
                     cout << "Status         : " << users[i].status << "\n";
+                    for (int j = 0; j < transaksiCount; ++j) {
+                        if (transaksi[j].nomorInduk == users[i].nomorInduk) {
+                            cout << "Nilai Matakuliah Mahasiswa\n";
+                            cout << "Kode Transaksi:" << transaksi[j].kodeTransaksi << endl;
+                            for (int k = 0; k < mataKuliahCount; ++k) {
+                                if (mataKuliah[k].kodeMataKuliah == transaksi[j].kodeMataKuliah) {
+                                    cout << k + 1 << ". " << mataKuliah[k].namaMataKuliah;
+                                }
+                            }
+                            cout << " : " << transaksi[j].nilai << "\n";
+                        }
+                    }
                 }
                 else {
                     cout << "Nomor Induk yang Anda masukkan bukan mahasiswa.\n";
@@ -497,29 +580,108 @@ void cariMahasiswa() {
     } while (pilihan == 'y' || pilihan == 'Y');
 }
 
-//error
-//void inputNilai() {
-//    cout << "\nInput Nilai Mahasiswa\n";
-//    string nomorInduk, kodeMataKuliah, kodeTransaksi;
-//    int nilai;
-//
-//    cout << "masukkan nomor transaksi: ";
-//    cin >> kodeTransaksi;
-//    cout << "Masukkan nomor induk mahasiswa: ";
-//    cin >> nomorInduk;
-//    cout << "Masukkan kode mata kuliah: ";
-//    cin >> kodeMataKuliah;
-//    cout << "Masukkan nilai: ";
-//    cin >> nilai;
-//
-//    transaksi[transaksiCount].k = kodeMataKuliah;
-//    transaksi[transaksiCount].namaMataKuliah = namaMataKuliah;
-//    transaksi[transaksiCount].dosen = nomorIndukDosen;
-//    transaksiCount++;
-//
-//}
+void inputNilai() {
+    string kodeTransaksi;
 
-void dosenDashboard(User& currentUser) {
+	cout << "\nInput Nilai Mahasiswa\n";
+	cout << "Masukkan kode transaksi: ";
+	cin >> kodeTransaksi;
+    for (int i = 0; i < transaksiCount; ++i) {
+        if (transaksi[i].kodeTransaksi == kodeTransaksi) {
+            // Temukan mata kuliah yang sesuai dengan transaksi
+            for (int j = 0; j < mataKuliahCount; ++j) {
+                if (mataKuliah[j].kodeMataKuliah == transaksi[i].kodeMataKuliah) {
+                    // Periksa apakah dosen yang input nilai adalah dosen yang mengajar mata kuliah ini
+                    if (mataKuliah[j].nomorIndukDosen == currentUser.nomorInduk) {
+                        cout << "Masukkan nilai: ";
+                        cin >> transaksi[i].nilai;
+                        cout << "Nilai berhasil diinput." << endl;
+                        return;
+                    }
+                    else {
+                        cout << "Anda tidak memiliki wewenang untuk menginput nilai pada mata kuliah ini.\n";
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    cout << "Kode transaksi tidak ditemukan\n";
+}
+
+void lihatNilai() {
+    cout << "\nNilai Mahasiswa\n";
+    cout << "Mahasiswa " << currentUser.nama << " NBI: " << currentUser.nomorInduk << endl;
+    for (int i = 0; i < transaksiCount; ++i) {
+        if (currentUser.nomorInduk == transaksi[i].nomorInduk) {
+            cout << i +1 << ". Kode Mata Kuliah:  " << transaksi[i].kodeMataKuliah;
+            cout << "  Nilai: " << transaksi[i].nilai << "\n";
+        }
+    }
+}
+
+//dashboard
+void adminDashboard() {
+    int choice;
+    do {
+        cout << "\n=== DASHBOARD ADMIN ===" << endl;
+        cout << "Hai Admin, " << currentUser.nama << endl;
+        cout << "1. Detail User ALL" << endl;
+        cout << "2. Cari User" << endl;
+        cout << "3. Tambah User" << endl;
+        cout << "4. Edit User" << endl;
+        cout << "5. Detail Mata Kuliah ALL" << endl;
+        cout << "6. Cari Mata Kuliah" << endl;
+        cout << "7. Tambah Mata Kuliah" << endl;
+        cout << "8. Edit Mata Kuliah" << endl;
+        cout << "9. Detail Mahasiswa" << endl;
+        cout << "10. Input Transaksi" << endl;
+        cout << "11. Kembali ke Login" << endl;
+        cout << "Pilih opsi : ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            detailUser();
+            break;
+        case 2:
+            cariUser();
+            break;
+        case 3:
+            tambahUser();
+            break;
+        case 4:
+            editUser();
+            break;
+        case 5:
+            detailMataKuliah();
+            break;
+        case 6:
+            cariMataKuliah();
+            break;
+        case 7:
+            tambahMataKuliah();
+            break;
+        case 8:
+            editMataKuliah();
+            break;
+        case 9:
+            detailMahasiswa();
+            break;
+        case 10:
+            inputTransaksi();
+            break;
+        case 11:
+            cout << "Keluar dari Dashboard Admin." << endl;
+            break;
+        default:
+            cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
+            break;
+        }
+    } while (choice != 11);
+};
+void dosenDashboard() {
     int choice;
     do {
         cout << "\n=== DASHBOARD DOSEN ===" << endl;
@@ -539,7 +701,7 @@ void dosenDashboard(User& currentUser) {
             cariMahasiswa();
             break;
         case 3:
-            //inputNilai(currentTransaksi);
+            inputNilai();
             break;
         case 4:
             cout << "Keluar dari Dashboard Dosen." << endl;
@@ -550,14 +712,7 @@ void dosenDashboard(User& currentUser) {
         }
     } while (choice != 4);
 }
-
-//dashboard mahasiswa
-
-void lihatNilai() {
-
-}
-
-void mahasiswaDashboard(User& currentUser) {
+void mahasiswaDashboard() {
 	int choice;
     do {
 		cout << "\n=== DASHBOARD MAHASISWA ===" << endl;
@@ -578,7 +733,7 @@ void mahasiswaDashboard(User& currentUser) {
 			cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
 			break;
 		}
-	} while (choice != 3);
+	} while (choice != 2);
 }
 
 int main() {
@@ -587,7 +742,7 @@ int main() {
 
     blueprintUserAndAdmin();
     blueprintMataKuliah();
-    
+    blueprintTransaksi();
  
 
     do {
@@ -601,17 +756,17 @@ int main() {
             if (role == "admin") {
                 cout << "\nBerhasil login sebagai ADMIN!" << endl;
                 //dashboard admin
-                adminDashboard(currentUser);
+                adminDashboard();
             }
             else if (role == "dosen") {
                 cout << "\nBerhasil Login sebagai DOSEN!" << endl;
                 //dashboard dosen
-                dosenDashboard(currentUser);
+                dosenDashboard();
             }
             else if (role == "mahasiswa") {
                 cout << "\nBerhasil Login! sebagai MAHASISWA!" << endl;
                 //dashboard mahasiswa
-                //mahasiswaDashboard(currentUser);
+                mahasiswaDashboard();
             }
             else {
                 cout << "\nRole tidak valid. Silakan hubungi admin.\n";

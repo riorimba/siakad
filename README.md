@@ -9,19 +9,24 @@ file siakad/siakad.cpp dan menjalankannya pada compiler C++ yang sesuai dengan s
 ## Issue / Bugs
 karena program belum selesai, mungkin masih ada beberapa bug.
 jangan segan-segan untuk melaporkan bug
-* - struct relasi
+ - 
 
 ## fitur-fitur
 * Validasi
-* Register Login
+ - nomorInduk Uniq
+ - kodeMataKuliah Uniq
+ - kodeTransaksi Uniq
 * Login berdasarkan role(admin/user)
-* Admin dashboard
-  - lihat detail User
-  - cari User
-  - tambah User
-  - cari user
-  - dosen input nilai mahasiswa
+* Admin Dashboard
+ - Creat, Read, Update User
+ - Creat, Read, Update Mata Kuliah
+ - Creat, Read, Update Transaksi
+* Dosen Dashboard
+ - Detail mahasiswa ALL
+ - Cara Mahasiswa(nomorInduk)
+ - Input Nilai
+* Mahasiswa Dashboard
+ - Lihat nilai diri sendiri
 
 ## fitur mendatang
 * AutoIncrement saat register nomorInduk
-* function mahasiswa
