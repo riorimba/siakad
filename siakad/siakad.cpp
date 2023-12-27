@@ -25,7 +25,6 @@ struct MataKuliah {
 
 // Struct Transaksi
 struct Transaksi {
-	string kodeTransaksi;
     string nomorInduk;
     string kodeMataKuliah;
     int nilai = 0;
@@ -35,7 +34,7 @@ struct Transaksi {
 // user
 const int MAX_USERS = 100;
 User users[MAX_USERS];
-int userCount = 4;
+int userCount = 5;
 // mata kuliah
 const int MAX_MATAKULIAH = 100;
 MataKuliah mataKuliah[MAX_MATAKULIAH];
@@ -43,7 +42,7 @@ int mataKuliahCount = 3;
 // transaksi
 const int MAX_TRANSAKSI = 100;
 Transaksi transaksi[MAX_TRANSAKSI];
-int transaksiCount = 2;
+int transaksiCount = 3;
 
 User currentUser;
 MataKuliah currentMataKuliah;
@@ -74,33 +73,41 @@ void blueprintUserAndAdmin() {
     users[3].nama = "agil";
     users[3].role = "dosen";
     users[3].status = "aktif";
+
+    users[4].nomorInduk = "1462300005";
+    users[4].password = "Monhero12";
+    users[4].nama = "ambatukam";
+    users[4].role = "mahasiswa";
+    users[4].status = "aktif";
 }   
 void blueprintMataKuliah() {
 	mataKuliah[0].kodeMataKuliah = "MK001";
 	mataKuliah[0].namaMataKuliah = "Pemrograman Dasar";
-    mataKuliah[0].namaDosen = "Pak Raka";
+    mataKuliah[0].namaDosen = "Pak Simbah";
 	mataKuliah[0].nomorIndukDosen = "1462300002";
 
 	mataKuliah[1].kodeMataKuliah = "MK002";
 	mataKuliah[1].namaMataKuliah = "Pemrograman Lanjut";
-    mataKuliah[1].namaDosen = "Pak Agil";
+    mataKuliah[1].namaDosen = "Pak Simbah";
     mataKuliah[1].nomorIndukDosen = "1462300002";
 
 	mataKuliah[2].kodeMataKuliah = "MK003";
 	mataKuliah[2].namaMataKuliah = "Pemrograman Web";
-    mataKuliah[2].namaDosen = "Pak Abidin";
+    mataKuliah[2].namaDosen = "Pak Agil";
     mataKuliah[2].nomorIndukDosen = "1462300004";
 }
 void blueprintTransaksi() {
-    transaksi[0].kodeTransaksi = "TR001";
     transaksi[0].nomorInduk = "1462300003";
     transaksi[0].kodeMataKuliah = "MK001";
     transaksi[0].nilai = 0;
 
-    transaksi[1].kodeTransaksi = "TR002";
     transaksi[1].nomorInduk = "1462300003";
-    transaksi[1].kodeMataKuliah = "MK003";
+    transaksi[1].kodeMataKuliah = "MK002";
     transaksi[1].nilai = 0;
+
+    transaksi[2].nomorInduk = "1462300003";
+    transaksi[2].kodeMataKuliah = "MK003";
+    transaksi[2].nilai = 0;
 }
 
 //Validasi
@@ -177,20 +184,18 @@ bool loginUser(const string& nomorInduk, const string& password, string& role, U
 void detailUser() {
     cout << "\nDetail Pengguna:\n";
     for (int i = 0; i < userCount; ++i) {
-        cout << "Pengguna " << i + 1 << ":\n";
-        cout << "Nomor Induk    : " << users[i].nomorInduk << "\n";
-        //cout << "Password       : " << users[i].password << "\n";
-        cout << "Nama           : " << users[i].nama << "\n";
-        cout << "Role           : " << users[i].role << "\n";
-        cout << "Status         : " << users[i].status << "\n";
-        cout << "\n";
+        cout << i + 1 << ". "
+            << "Nomor Induk: " << setw(12) << left << users[i].nomorInduk
+            << " Nama: " << setw(12) << left << users[i].nama
+            << " Role: " << setw(12) << left << users[i].role
+            << " Status: " << users[i].status << "\n";
     }
 }
 
 void cariUser() {
 	string nomorInduk;
     char pilihan = 0;
-    
+
     do {
         bool penggunaDitemukan = false;
         cout << "\nCari Pengguna Berdasarkan Nomor Induk\n";
@@ -200,11 +205,10 @@ void cariUser() {
             if (users[i].nomorInduk == nomorInduk) {
                 penggunaDitemukan = true;
                 cout << "\nPengguna ditemukan!\n";
-				cout << "Pengguna " << i + 1 << ":\n";
-				cout << "Nomor Induk    : " << users[i].nomorInduk << "\n";
-				cout << "Nama           : " << users[i].nama << "\n";
-				cout << "Role           : " << users[i].role << "\n";
-				cout << "Status         : " << users[i].status << "\n";
+				cout << "Nomor Induk: " << users[i].nomorInduk
+                    << " Nama: " << setw(12) << left << users[i].nama
+                    << " Role: " << setw(12) << left << users[i].role
+                    << " Status: " << users[i].status << "\n";
             }
 		}
         if (!penggunaDitemukan) {
@@ -305,12 +309,11 @@ void editUser(){
 void detailMataKuliah() {
 	cout << "\nDetail Mata Kuliah:\n";
     for (int i = 0; i < mataKuliahCount; ++i) {
-		cout << "Mata Kuliah " << i + 1 << ":\n";
-		cout << "Kode Mata Kuliah    : " << mataKuliah[i].kodeMataKuliah << "\n";
-		cout << "Nama Mata Kuliah    : " << mataKuliah[i].namaMataKuliah << "\n";
-        cout << "Nama Dosen          : " << mataKuliah[i].namaDosen << "\n";
-		cout << "Nomor Induk Dosen   : " << mataKuliah[i].nomorIndukDosen << "\n";
-		cout << "\n";
+        cout << i+1 << ". "
+			<< "Kode Mata Kuliah: " << setw(6) << left << mataKuliah[i].kodeMataKuliah
+			<< "Nama Mata Kuliah: " << setw(20) << left << mataKuliah[i].namaMataKuliah
+			<< "Nama Dosen: " << setw(12) << left << mataKuliah[i].namaDosen
+			<< "Nomor Induk Dosen: " << mataKuliah[i].nomorIndukDosen << "\n";
 	}
 
 }
@@ -328,11 +331,10 @@ void cariMataKuliah() {
             if (mataKuliah[i].kodeMataKuliah == kodeMataKuliah) {
 				mataKuliahDitemukan = true;
 				cout << "\nMata Kuliah ditemukan!\n";
-				cout << "Mata Kuliah " << i + 1 << ":\n";
-				cout << "Kode Mata Kuliah    : " << mataKuliah[i].kodeMataKuliah << "\n";
-				cout << "Nama Mata Kuliah    : " << mataKuliah[i].namaMataKuliah << "\n";
-                cout << "Nama Dosen          : " << mataKuliah[i].namaDosen << "\n";
-				cout << "Nomor Induk Dosen   : " << mataKuliah[i].nomorIndukDosen << "\n";
+                cout << "Kode Mata Kuliah: " << setw(6) << left << mataKuliah[i].kodeMataKuliah
+                    << "Nama Mata Kuliah: " << setw(20) << left << mataKuliah[i].namaMataKuliah
+                    << "Nama Dosen: " << setw(12) << left << mataKuliah[i].namaDosen
+                    << "Nomor Induk Dosen: " << mataKuliah[i].nomorIndukDosen << "\n";
 			}
 		}
         if (!mataKuliahDitemukan) {
@@ -440,26 +442,11 @@ void editMataKuliah() {
 	}
 }
 
-void inputTransaksi() {
+void inputMataKuliahMahasiswa() {
     cout << "\nInput Transaksi Mahasiswa\n";
     string nomorInduk, kodeMataKuliah, kodeTransaksi;
     bool penggunaDitemukan = false;
-
-    bool nomorTransaksiUnik = false;
-    while (!nomorTransaksiUnik) {
-        cout << "Masukkan nomor transaksi: ";
-        cin >> kodeTransaksi;
-
-        nomorTransaksiUnik = true;
-        for (int i = 0; i < transaksiCount; ++i) {
-            if (transaksi[i].kodeTransaksi == kodeTransaksi) {
-                cout << "Nomor transaksi sudah digunakan. Silakan coba lagi." << endl;
-                cout << endl;
-                nomorTransaksiUnik = false;
-                break;
-            }
-        }
-    }
+    char pilihan = 0;
 
     cout << "Masukkan nomor induk mahasiswa: ";
     cin >> nomorInduk;
@@ -468,31 +455,41 @@ void inputTransaksi() {
         if (users[i].nomorInduk == nomorInduk) {
             if (users[i].role == "mahasiswa") {
                 penggunaDitemukan = true;
-                cout << "\nPengguna ditemukan!\n";
+                cout << "Pengguna ditemukan!\n";
 
-                cout << "Masukkan kode mata kuliah: ";
-                cin >> kodeMataKuliah;
+                //show nama&kode mata kuliah yang tersedia
+                cout << "\nMata Kuliah yang tersedia:\n";
+                for (int i = 0; i < mataKuliahCount; ++i) {
+                    cout << i + 1 << ". "
+                        << setw(20) << left << mataKuliah[i].namaMataKuliah
+                        << "  kode: " << mataKuliah[i].kodeMataKuliah << endl;
+                }
 
-                bool mataKuliahDitemukan = false;
+                do {
+                    cout << "Masukkan kode mata kuliah: ";
+                    cin >> kodeMataKuliah;
 
-                for (int k = 0; k < transaksiCount; ++k) {
-                    if (transaksi[k].nomorInduk == nomorInduk && transaksi[k].kodeMataKuliah == kodeMataKuliah) {
-                        cout << "Mahasiswa sudah pernah mengambil mata kuliah ini sebelumnya.\n";
-                        mataKuliahDitemukan = true;
-                        break;
+                    bool mataKuliahDitemukan = false;
+
+                    for (int k = 0; k < transaksiCount; ++k) {
+                        if (transaksi[k].nomorInduk == nomorInduk && transaksi[k].kodeMataKuliah == kodeMataKuliah) {
+                            cout << "Mahasiswa sudah pernah mengambil mata kuliah ini sebelumnya.\n";
+                            mataKuliahDitemukan = true;
+                            break;
+                        }
                     }
-                }
 
-                if (!mataKuliahDitemukan) {
-                    transaksi[transaksiCount].kodeTransaksi = kodeTransaksi;
-                    transaksi[transaksiCount].nomorInduk = nomorInduk;
-                    transaksi[transaksiCount].kodeMataKuliah = kodeMataKuliah;
-                    transaksi[transaksiCount].nilai = 0;
-                    transaksiCount++;
-                    cout << "Transaksi berhasil diinput." << endl;
-                }
+                    if (!mataKuliahDitemukan) {
+                        transaksi[transaksiCount].nomorInduk = nomorInduk;
+                        transaksi[transaksiCount].kodeMataKuliah = kodeMataKuliah;
+                        transaksi[transaksiCount].nilai = 0;
+                        transaksiCount++;
+                        cout << "Transaksi berhasil diinput." << endl;
+                    }
 
-                break;
+                    cout << "Apakah Anda ingin menginput mata kuliah lagi? (y/n): ";
+                    cin >> pilihan;
+                } while (pilihan == 'y' || pilihan == 'Y');
             }
             else {
                 cout << "Nomor Induk yang Anda masukkan bukan mahasiswa.\n";
@@ -507,24 +504,31 @@ void inputTransaksi() {
 }
 
 void detailMahasiswa() {
+    int nomorMataKuliah = 1;
     cout << "\nDaftar Mahasiswa:" << endl;
-    for (int i = 0; i < userCount; ++i) {
+    for (int i = 0,count = 0; i < userCount; ++i) {
         if (users[i].role == "mahasiswa") {
-            cout << "Mahasiswa " << i + 1 << ":\n";
+            cout << "Mahasiswa " << ++count << ":\n";
             cout << "Nomor Induk    : " << users[i].nomorInduk << "\n";
             cout << "Nama           : " << users[i].nama << "\n";
             cout << "Status         : " << users[i].status << "\n";
-            cout << "Nilai Matakuliah Mahasiswa\n";
+
+            bool hasMataKuliah = false;
+            cout << "\nNilai Matakuliah Mahasiswa\n";
             for (int j = 0; j < transaksiCount; ++j) {
                 if (transaksi[j].nomorInduk == users[i].nomorInduk) {
-                    cout << "Kode Transaksi:" << transaksi[j].kodeTransaksi << endl;
                     for (int k = 0; k < mataKuliahCount; ++k ) {
                         if (mataKuliah[k].kodeMataKuliah == transaksi[j].kodeMataKuliah) {
-                            cout << j+1 << ". " << mataKuliah[k].namaMataKuliah;
+
+                            cout << setw(20) << left << mataKuliah[k].namaMataKuliah;
+                            hasMataKuliah = true;
                         }
                     }
                     cout << " : " << transaksi[j].nilai << "\n";
                 }
+            }
+            if (!hasMataKuliah) {
+                cout << "Mahasiswa Belum Mengambil Mata Kuliah\n";
             }
             cout << "============================\n";
         }
@@ -546,22 +550,27 @@ void cariMahasiswa() {
                 if (users[i].role == "mahasiswa") {
                     penggunaDitemukan = true;
                     cout << "\nPengguna ditemukan!\n";
-                    cout << "Pengguna " << i + 1 << ":\n";
                     cout << "Nomor Induk    : " << users[i].nomorInduk << "\n";
                     cout << "Nama           : " << users[i].nama << "\n";
                     cout << "Role           : " << users[i].role << "\n";
                     cout << "Status         : " << users[i].status << "\n";
+
+                    bool hasMataKuliah = false;
+                    cout << "\nNilai Matakuliah Mahasiswa\n";
                     for (int j = 0; j < transaksiCount; ++j) {
                         if (transaksi[j].nomorInduk == users[i].nomorInduk) {
-                            cout << "Nilai Matakuliah Mahasiswa\n";
-                            cout << "Kode Transaksi:" << transaksi[j].kodeTransaksi << endl;
                             for (int k = 0; k < mataKuliahCount; ++k) {
                                 if (mataKuliah[k].kodeMataKuliah == transaksi[j].kodeMataKuliah) {
-                                    cout << k + 1 << ". " << mataKuliah[k].namaMataKuliah;
+
+                                    cout << j + 1 << ". " << setw(20) << left << mataKuliah[k].namaMataKuliah;
+                                    hasMataKuliah = true;
                                 }
                             }
                             cout << " : " << transaksi[j].nilai << "\n";
                         }
+                    }
+                    if (!hasMataKuliah) {
+                        cout << "Mahasiswa Belum Mengambil Mata Kuliah\n";
                     }
                 }
                 else {
@@ -581,45 +590,135 @@ void cariMahasiswa() {
 }
 
 void inputNilai() {
-    string kodeTransaksi;
+    string nim;
 
-	cout << "\nInput Nilai Mahasiswa\n";
-	cout << "Masukkan kode transaksi: ";
-	cin >> kodeTransaksi;
+    cout << "\nInput Nilai Mahasiswa\n";
+    cout << "Masukkan NIM Mahasiswa: ";
+    cin >> nim;
+
+    bool mahasiswaDitemukan = false;
+
     for (int i = 0; i < transaksiCount; ++i) {
-        if (transaksi[i].kodeTransaksi == kodeTransaksi) {
+        if (transaksi[i].nomorInduk == nim) {
+            mahasiswaDitemukan = true;
+
             // Temukan mata kuliah yang sesuai dengan transaksi
             for (int j = 0; j < mataKuliahCount; ++j) {
                 if (mataKuliah[j].kodeMataKuliah == transaksi[i].kodeMataKuliah) {
+
                     // Periksa apakah dosen yang input nilai adalah dosen yang mengajar mata kuliah ini
                     if (mataKuliah[j].nomorIndukDosen == currentUser.nomorInduk) {
-                        cout << "Masukkan nilai: ";
+                        cout << "Masukkan nilai untuk mata kuliah " << mataKuliah[j].namaMataKuliah << ": ";
                         cin >> transaksi[i].nilai;
-                        cout << "Nilai berhasil diinput." << endl;
-                        return;
                     }
-                    else {
-                        cout << "Anda tidak memiliki wewenang untuk menginput nilai pada mata kuliah ini.\n";
-                        return;
+                }
+            }
+            
+        }
+    }
+
+    if (mahasiswaDitemukan) {
+        cout << "Nilai berhasil diinput." << endl;
+    }
+    else {
+        cout << "Mahasiswa dengan NIM " << nim << " tidak ditemukan atau belum mengambil mata kuliah.\n";
+    }
+}
+
+void editNilai() {
+    string nim;
+    string kodeMataKuliah;
+    double nilaiBaru;
+
+    cout << "\nEdit Nilai Mahasiswa\n";
+    cout << "Masukkan NIM Mahasiswa: ";
+    cin >> nim;
+
+    bool mahasiswaDitemukan = false;
+    bool mataKuliahDitemukan = false;
+
+
+    for (int i = 0; i < transaksiCount; ++i) {
+        if (transaksi[i].nomorInduk == nim) {
+            mahasiswaDitemukan = true;
+
+            cout << "Mata Kuliah yang Diambil oleh Mahasiswa dengan NIM " << nim << ":\n";
+
+            for (int i = 0; i < transaksiCount; ++i) {
+                if (transaksi[i].nomorInduk == nim) {
+                    mahasiswaDitemukan = true;
+
+                    for (int j = 0; j < mataKuliahCount; ++j) {
+                        if (transaksi[i].kodeMataKuliah == mataKuliah[j].kodeMataKuliah) {
+                            mataKuliahDitemukan = true;
+                            cout << "Kode Mata Kuliah: " << setw(6) << left << mataKuliah[j].kodeMataKuliah
+                                << "Nama Mata Kuliah: " << setw(20) << left << mataKuliah[j].namaMataKuliah
+                                << "Nilai: " << transaksi[i].nilai << "\n";
+                        }
                     }
+                }
+            }
+
+            cout << "\nMasukkan Kode Mata Kuliah yang akan diubah: ";
+            cin >> kodeMataKuliah;
+
+            bool mataKuliahDitemukan = false;
+
+            for (int j = 0; j < mataKuliahCount; ++j) {
+                if (transaksi[i].kodeMataKuliah == mataKuliah[j].kodeMataKuliah) {
+                    mataKuliahDitemukan = true;
+
+                    // Tampilkan informasi mata kuliah yang akan diubah
+                    cout << "Nilai Saat Ini: " << transaksi[i].nilai << "\n";
+
+                    // Masukkan nilai baru
+                    cout << "Masukkan Nilai Baru: ";
+                    cin >> nilaiBaru;
+
+                    // Simpan nilai baru
+                    transaksi[i].nilai = nilaiBaru;
+                    cout << "Nilai berhasil diubah.\n";
+                    break; // Keluar dari loop setelah nilai diubah
+                }
+            }
+
+            if (!mataKuliahDitemukan) {
+                cout << "Mata kuliah dengan kode " << kodeMataKuliah << " tidak ditemukan.\n";
+            }
+
+            break; // Keluar dari loop setelah mahasiswa ditemukan
+        }
+    }
+
+    if (!mahasiswaDitemukan) {
+        cout << "Mahasiswa dengan NIM " << nim << " tidak ditemukan atau tidak mengambil mata kuliah.\n";
+    }
+}
+
+
+
+void lihatNilai() {
+    cout << "\nNilai Mahasiswa\n";
+    cout << "Mahasiswa " << currentUser.nama << " NBI: " << currentUser.nomorInduk << endl;
+
+    int count = 0;
+
+    for (int i = 0; i < transaksiCount; ++i) {
+        if (currentUser.nomorInduk == transaksi[i].nomorInduk) {
+            for (int j = 0; j < mataKuliahCount; ++j) {
+                if (mataKuliah[j].kodeMataKuliah == transaksi[i].kodeMataKuliah) {
+                    cout << ++count << ". Nama Mata Kuliah: " << setw(20) << left << mataKuliah[j].namaMataKuliah;
+                    cout << "  Nilai: " << transaksi[i].nilai << "\n";
                 }
             }
         }
     }
 
-    cout << "Kode transaksi tidak ditemukan\n";
-}
-
-void lihatNilai() {
-    cout << "\nNilai Mahasiswa\n";
-    cout << "Mahasiswa " << currentUser.nama << " NBI: " << currentUser.nomorInduk << endl;
-    for (int i = 0; i < transaksiCount; ++i) {
-        if (currentUser.nomorInduk == transaksi[i].nomorInduk) {
-            cout << i +1 << ". Kode Mata Kuliah:  " << transaksi[i].kodeMataKuliah;
-            cout << "  Nilai: " << transaksi[i].nilai << "\n";
-        }
+    if (count == 0) {
+        cout << "Mahasiswa belum mengambil mata kuliah atau nilai belum diinput.\n";
     }
 }
+
 
 //dashboard
 void adminDashboard() {
@@ -636,8 +735,8 @@ void adminDashboard() {
         cout << "7. Tambah Mata Kuliah" << endl;
         cout << "8. Edit Mata Kuliah" << endl;
         cout << "9. Detail Mahasiswa" << endl;
-        cout << "10. Input Transaksi" << endl;
-        cout << "11. Kembali ke Login" << endl;
+        cout << "10. Input Mata Kuliah Mahasiswa" << endl;
+        cout << "11. Kembali ke Login/Keluar" << endl;
         cout << "Pilih opsi : ";
         cin >> choice;
 
@@ -670,7 +769,7 @@ void adminDashboard() {
             detailMahasiswa();
             break;
         case 10:
-            inputTransaksi();
+            inputMataKuliahMahasiswa();
             break;
         case 11:
             cout << "Keluar dari Dashboard Admin." << endl;
@@ -689,7 +788,8 @@ void dosenDashboard() {
         cout << "1. Detail Mahasiswa ALL" << endl;
         cout << "2. Cari Mahasiswa" << endl;
         cout << "3. Input Nilai" << endl;
-        cout << "4. Kembali ke Login" << endl;
+        cout << "4. Edit Nilai" << endl;
+        cout << "5. Kembali ke Login/Keluar" << endl;
         cout << "Pilih opsi : ";
         cin >> choice;
 
@@ -704,13 +804,16 @@ void dosenDashboard() {
             inputNilai();
             break;
         case 4:
+            editNilai();
+			break;
+        case 5:
             cout << "Keluar dari Dashboard Dosen." << endl;
             break;
         default:
             cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
             break;
         }
-    } while (choice != 4);
+    } while (choice != 5);
 }
 void mahasiswaDashboard() {
 	int choice;
@@ -718,7 +821,7 @@ void mahasiswaDashboard() {
 		cout << "\n=== DASHBOARD MAHASISWA ===" << endl;
 		cout << "Hai Mahasiswa, " << currentUser.nama << endl;
 		cout << "1. Lihat Nilai Mata Kuliah" << endl;
-		cout << "2. Kembali ke Login" << endl;
+		cout << "2. Kembali ke Login/Keluar" << endl;
 		cout << "Pilih opsi : ";
 		cin >> choice;
 
